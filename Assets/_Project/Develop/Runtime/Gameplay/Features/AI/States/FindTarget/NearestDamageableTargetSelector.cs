@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States
 {
-    public class NearestDamageableTargetSelector : ITargetSelector
+    public class NearestDamageableTargetSelector     : ITargetSelector
     {
         private Entity _source;
         private Transform _sourceTransform;

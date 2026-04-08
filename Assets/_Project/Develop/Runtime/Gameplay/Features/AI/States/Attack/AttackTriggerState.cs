@@ -3,7 +3,6 @@ using Assets._Project.Develop.Runtime.Utilities.Reactive;
 using Assets._Project.Develop.Runtime.Utilities.StateMachineCore;
 using UnityEngine;
 
-
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States
 {
     public class AttackTriggerState : State, IUpdatableState
@@ -22,6 +21,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States
             _attackRequest.Invoke();
         }
 
-        public void Update(float deltaTime) { }    
+        public void Update(float deltaTime)
+        {
+        }    
     }
 }

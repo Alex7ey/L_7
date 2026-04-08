@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0a96dc40ccf9fc4689c9026b043016d, type: 3}
-  m_Name: CombinationConfig
+  m_Script: {fileID: 11500000, guid: 3df3b2f33151b2441b963b3442473cc5, type: 3}
+  m_Name: EnemyConfig
   m_EditorClassIdentifier: 
-  <NumberChars>k__BackingField: 123456789
-  <LetterChars>k__BackingField: qwertyuiopasdfghjklzxcvbnm
-  <LengthCombination>k__BackingField: 3
+  <MaxHealth>k__BackingField: 100
+  <MovementSpeed>k__BackingField: 15
+  <RotationSpeed>k__BackingField: 350
+  <AttackDamage>k__BackingField: 100
+  <RadiusDetected>k__BackingField: 3

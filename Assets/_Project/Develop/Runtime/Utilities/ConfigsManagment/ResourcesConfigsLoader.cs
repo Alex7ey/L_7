@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Assets._Project.Develop.Runtime.Configs;
+using Assets._Project.Develop.Runtime.Configs.Entities;
+using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
-using Assets._Project.Develop.Runtime.Configs;
 
 namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
 {
@@ -15,7 +16,9 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
         {
             {typeof(StartWalletConfig), "Configs/StartWalletConfig" },
             {typeof(CurrencyIconsConfig),"Configs/CurrencyIconsConfig"},
-            {typeof(MovementSystemConfig),"Configs/MovementSystemConfig" }
+            {typeof(TowerConfig),"Configs/Entities/TowerConfig"},
+            {typeof(EnemyConfig),"Configs/Entities/EnemyConfig"},
+            {typeof(ProjectileConfig),"Configs/Entities/ProjectileConfig"},
         };
 
         public ResourcesConfigsLoader(ResourcesAssetsLoader resources)

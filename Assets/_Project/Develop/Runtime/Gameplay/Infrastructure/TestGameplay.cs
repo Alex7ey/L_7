@@ -1,20 +1,23 @@
 using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
-using Assets._Project.Develop.Runtime.Gameplay.Features.AI;
+using Assets._Project.Develop.Runtime.Gameplay.Features.EnemysEntity;
+using Assets._Project.Develop.Runtime.Gameplay.Features.ExplosionFeature;
+using Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 {
     public class TestGameplay
     {
-        private Entity _entity;
         private bool _isRunning;
-        private EntitiesFactory _entitiesFactory;
-        private BrainsFactory _brainsFactory;
+        private TowerFactory _towerFactory;
+        private EnemyEntityFactory _enemyFactory;
+        private ProjectileEntityFactory _projectileEntityFactory;
 
-        public TestGameplay(EntitiesFactory entitiesFactory, BrainsFactory brainsFactory)
+        public TestGameplay(TowerFactory towerFactory, EnemyEntityFactory enemyFactory, ProjectileEntityFactory projectileEntityFactory)
         {
-            _entitiesFactory = entitiesFactory;
-            _brainsFactory = brainsFactory;
+            _towerFactory = towerFactory;
+            _enemyFactory = enemyFactory;
+            _projectileEntityFactory = projectileEntityFactory;
         }
 
         public void Run()
@@ -28,42 +31,19 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
                 return;
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
-                CreateRandomTeleportingEntityTest();
+                _towerFactory.Create();
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
-                CreateToTargetTeleportingEntityTest();
+                _enemyFactory.Create(Vector3.forward * 5);
 
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                CreateHeroTest();
+            if (Input.GetMouseButtonDown(0))
+                Shoot();
         }
 
-        private void CreateRandomTeleportingEntityTest()
+        public void Shoot()
         {
-            _entity = _entitiesFactory.CreateEntity(Vector3.zero);
-            _brainsFactory.CreateRandomTeleportingEntity(_entity);
-        }
-
-        private void CreateToTargetTeleportingEntityTest()
-        {
-            _entity = _entitiesFactory.CreateEntity(Vector3.zero);
-            _brainsFactory.CreateToTargetTeleportingEntity(_entity);
-
-            CreateEntityEnemy(new Vector3(0, 0, 5));
-            CreateEntityEnemy(new Vector3(0, 0, -4), 80);
-        }
-
-        private void CreateHeroTest()
-        {
-            _entity = _entitiesFactory.CreateHero(Vector3.zero);
-            _brainsFactory.CreateMainHeroBrain(_entity);
-
-            CreateEntityEnemy(new Vector3(0, 0, 5));
-            CreateEntityEnemy(new Vector3(0, 0, -5));
-        }
-
-        private void CreateEntityEnemy(Vector3 spawnPosition, float hp = 100)
-        {
-            _entitiesFactory.CreateEntityEnemy(spawnPosition, hp);
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+                _projectileEntityFactory.CreateExplosion(hit.point);
         }
     }
 }

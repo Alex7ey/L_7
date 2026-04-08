@@ -5,10 +5,11 @@ using Assets._Project.Develop.Runtime.Gameplay.Features.ApplyDamage;
 using Assets._Project.Develop.Runtime.Utilities.Conditions;
 using Assets._Project.Develop.Runtime.Utilities.Reactive;
 using System;
+using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
 {
-    public class ApplyAreaDamageSystem : IInitializableSystem, IDisposableSystem
+    public class AreaDamageSystem : IInitializableSystem, IDisposableSystem
     {
         private Buffer<Entity> _contactEntities;
         private ReactiveVariable<float> _damageAmount;
@@ -21,7 +22,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
             _damageAmount = entity.InstantAttackDamage;
             _canStartAttack = entity.CanStartAttack;
             _contactEntities = entity.ContactEntitiesBuffer;
-
             _attackAreaDamageRequest = entity.StartAttackRequest.Subscribe(DealDamage);
         }
 
@@ -35,7 +35,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
                 Entity contactEntity = _contactEntities.Items[i];
 
                 if (contactEntity.HasComponent<TakeDamageRequest>())
-                    contactEntity.TakeDamageRequest.Invoke(_damageAmount.Value);
+                    contactEntity.TakeDamageRequest.Invoke(_damageAmount.Value);                                
             }
         }
 

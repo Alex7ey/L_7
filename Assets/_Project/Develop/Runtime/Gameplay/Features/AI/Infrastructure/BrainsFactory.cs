@@ -1,14 +1,17 @@
 ﻿using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.FindTarget;
+using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.Movement;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.TeleportState;
 using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
+using Assets._Project.Develop.Runtime.Gameplay.Features.MainHero;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Utilities.Conditions;
+using Assets._Project.Develop.Runtime.Utilities.StateMachineCore;
 using Assets._Project.Develop.Runtime.Utilities.Timer;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
 {
@@ -76,6 +79,11 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             _brainsContext.SetFor(entity, brain);
 
             return brain;
+        }
+
+        public StateMachineBrain CreateEnemyBrain(Entity entity)
+        {            
+            return new StateMachineBrain(CreateEnemyEntityStateMachine(entity));
         }
 
         private AIStateMachine CreateMovementStateMachine(Entity entity)
@@ -157,7 +165,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             ICompositeCondition fromFindTargetToTeleportStateCondition = new CompositeCondition()
                 .Add(new FuncCondition(() => idleTimer.IsOver))
                 .Add(new FuncCondition(() => entity.CanTeleportProcess.Evaluate()))
-                .Add(new FuncCondition(() => entity.CurrentTarget.Value != null))
+                .Add(new FuncCondition(() => entity.CurrentTargetPosition.Value != null))
                 .Add(new FuncCondition(() => entity.CurrentEnergy.Value >= entity.MaxEnergy.Value * (entity.TeleportEnergyThreshold.Value / 100)));
 
             AIStateMachine stateMachine = new AIStateMachine(disposables);
@@ -173,6 +181,28 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             stateMachine.AddTransition(attackState, emptyState, fromAttackStateToEmptyCondition);
 
             return stateMachine;
+        }
+
+        private AIStateMachine CreateEnemyEntityStateMachine(Entity entity)
+        {
+            ToTargetMovementState movementState = new(entity);
+            AttackTriggerState attackState = new(entity);
+            FindDistanceToTargetState findTargetState = new(entity, _container.Resolve<TowerHolderService>());
+
+            AIStateMachine stateMachine = new();
+            AIParallelState parallelState = new AIParallelState(findTargetState, stateMachine);
+
+            FuncCondition fromMovementToAttackState = new(() => entity.IsTargetReached.Value);
+
+            stateMachine.AddState(movementState);
+            stateMachine.AddState(attackState);
+
+            stateMachine.AddTransition(movementState, attackState, fromMovementToAttackState);
+
+            AIStateMachine rootStateMachine = new AIStateMachine();
+            rootStateMachine.AddState(parallelState);
+
+            return rootStateMachine;
         }
     }
 }

@@ -2,6 +2,13 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
 {
 	public partial class Entity
 	{
+		public Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity.IsTower IsTowerC => GetComponent<Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity.IsTower>();
+
+		public Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Entity AddIsTower()
+		{
+			return AddComponent(new Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity.IsTower() ); 
+		}
+
 		public Assets._Project.Develop.Runtime.Gameplay.Features.Sensors.BodyCollider BodyColliderC => GetComponent<Assets._Project.Develop.Runtime.Gameplay.Features.Sensors.BodyCollider>();
 
 		public UnityEngine.CapsuleCollider BodyCollider => BodyColliderC.Value;
@@ -1585,6 +1592,30 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
 		public Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Entity AddCurrentTargetPosition(Assets._Project.Develop.Runtime.Utilities.Reactive.ReactiveVariable<UnityEngine.Vector3> value)
 		{
 			return AddComponent(new Assets._Project.Develop.Runtime.Gameplay.Common.CurrentTargetPosition() {Value = value}); 
+		}
+
+		public Assets._Project.Develop.Runtime.Gameplay.Common.IsTargetReached IsTargetReachedC => GetComponent<Assets._Project.Develop.Runtime.Gameplay.Common.IsTargetReached>();
+
+		public Assets._Project.Develop.Runtime.Utilities.Reactive.ReactiveVariable<System.Boolean> IsTargetReached => IsTargetReachedC.Value;
+
+		public bool TryGetIsTargetReached(out Assets._Project.Develop.Runtime.Utilities.Reactive.ReactiveVariable<System.Boolean> value)
+		{
+			bool result = TryGetComponent(out Assets._Project.Develop.Runtime.Gameplay.Common.IsTargetReached component);
+			if(result)
+				value = component.Value;
+			else
+				value = default(Assets._Project.Develop.Runtime.Utilities.Reactive.ReactiveVariable<System.Boolean>);
+			return result;
+		}
+
+		public Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Entity AddIsTargetReached()
+		{
+			return AddComponent(new Assets._Project.Develop.Runtime.Gameplay.Common.IsTargetReached() { Value = new Assets._Project.Develop.Runtime.Utilities.Reactive.ReactiveVariable<System.Boolean>() }); 
+		}
+
+		public Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Entity AddIsTargetReached(Assets._Project.Develop.Runtime.Utilities.Reactive.ReactiveVariable<System.Boolean> value)
+		{
+			return AddComponent(new Assets._Project.Develop.Runtime.Gameplay.Common.IsTargetReached() {Value = value}); 
 		}
 
 	}

@@ -33,4 +33,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Common
     {
         public ReactiveVariable<Vector3> Value;
     }
+
+    public class IsTargetReached : IEntityComponent
+    {
+        public ReactiveVariable<bool> Value;
+    }
 }
