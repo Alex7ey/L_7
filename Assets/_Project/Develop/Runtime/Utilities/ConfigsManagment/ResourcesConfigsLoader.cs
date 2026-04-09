@@ -1,5 +1,6 @@
 ﻿using Assets._Project.Develop.Runtime.Configs;
 using Assets._Project.Develop.Runtime.Configs.Entities;
+using Assets._Project.Develop.Runtime.Configs.Gameplay.Levels;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
 using System;
 using System.Collections;
@@ -16,9 +17,12 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
         {
             {typeof(StartWalletConfig), "Configs/StartWalletConfig" },
             {typeof(CurrencyIconsConfig),"Configs/CurrencyIconsConfig"},
+
             {typeof(TowerConfig),"Configs/Entities/TowerConfig"},
             {typeof(EnemyConfig),"Configs/Entities/EnemyConfig"},
             {typeof(ProjectileConfig),"Configs/Entities/ProjectileConfig"},
+
+            {typeof(LevelsListConfig),"Configs/Levels/LevelsListConfig"},
         };
 
         public ResourcesConfigsLoader(ResourcesAssetsLoader resources)

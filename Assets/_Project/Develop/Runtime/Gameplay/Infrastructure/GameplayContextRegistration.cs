@@ -1,22 +1,28 @@
-﻿using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
+﻿using Assets._Project.Develop.Runtime.Configs.Gameplay.Levels;
+using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
 using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Mono;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI;
 using Assets._Project.Develop.Runtime.Gameplay.Features.EnemysEntity;
 using Assets._Project.Develop.Runtime.Gameplay.Features.ExplosionFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.MainHero;
+using Assets._Project.Develop.Runtime.Gameplay.Features.StagesFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity;
+using Assets._Project.Develop.Runtime.Gameplay.GameStates;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.UI.GamePlayScreen;
 using Assets._Project.Develop.Runtime.UI.UIRoot;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
+using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 {
     public class GameplayContextRegistration
     {
-        public static void Process(DIContainer container)
+        private static GameplayInputArgs _gameplayInputArgs;
+
+        public static void Process(DIContainer container, GameplayInputArgs inputArgs = null)
         {
             container.RegisterAsSingle(CreateGameplay);
             container.RegisterAsSingle(CreateTowerFactory);
@@ -28,13 +34,18 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateCollidersRegistryService);
             container.RegisterAsSingle(CreateGamePlayPresentersFactory);
             container.RegisterAsSingle(CreateProjectileEntityFactory);
-            
-
+            container.RegisterAsSingle(CreateStageProviderService);
+            container.RegisterAsSingle(CreatePreperationTriggerService);
+            container.RegisterAsSingle(CreateStagesFactory);
+            container.RegisterAsSingle(CreateGameplayStatesFactory);
+           
             container.RegisterAsSingle(CreateGamePlayUIRoot).NonLazy();
             container.RegisterAsSingle(CreateTowerHolderService).NonLazy();
             container.RegisterAsSingle(CreateMonoEntitiesFactory).NonLazy();
 
             container.RegisterAsSingle<IInputService>(CreateDesktopInput);
+
+            _gameplayInputArgs = inputArgs;
         }
 
         private static GamePlayUIRoot CreateGamePlayUIRoot(DIContainer container)
@@ -55,14 +66,14 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
                 container.Resolve<CollidersRegistryService>());
         }
         private static DesktopInput CreateDesktopInput(DIContainer container) => new DesktopInput();
-     
+
         private static GamePlayPresentersFactory CreateGamePlayPresentersFactory(DIContainer container) => new(container);
 
         private static EntitiesFactory CreateEntitiesFactory(DIContainer container) => new EntitiesFactory(container);
 
         private static EntitiesLifeContext CreateEntitiesLifeContext(DIContainer container) => new EntitiesLifeContext();
 
-        private static TestGameplay CreateGameplay(DIContainer container) => new(container.Resolve<TowerFactory>(), container.Resolve<EnemyEntityFactory>(), container.Resolve<ProjectileEntityFactory>());
+        private static ProjectileShooter CreateGameplay(DIContainer container) => new(container.Resolve<ProjectileEntityFactory>());
 
         private static CollidersRegistryService CreateCollidersRegistryService(DIContainer container) => new CollidersRegistryService();
 
@@ -77,5 +88,18 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private static TowerHolderService CreateTowerHolderService(DIContainer container) => new TowerHolderService(container.Resolve<EntitiesLifeContext>());
 
         private static ProjectileEntityFactory CreateProjectileEntityFactory(DIContainer container) => new ProjectileEntityFactory(container);
+
+        private static StageProviderService CreateStageProviderService(DIContainer container)
+        {
+            return new StageProviderService(
+                container.Resolve<ConfigsProviderService>().GetConfig<LevelsListConfig>().GetBy(_gameplayInputArgs.LevelNumber),
+                container.Resolve<StagesFactory>());
+        }
+
+        private static PreperationTriggerService CreatePreperationTriggerService(DIContainer container) => new PreperationTriggerService();
+
+        private static StagesFactory CreateStagesFactory(DIContainer container) => new StagesFactory(container);
+
+        private static GameplayStatesFactory CreateGameplayStatesFactory(DIContainer container) => new GameplayStatesFactory(container);
     }
 }

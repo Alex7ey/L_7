@@ -9,11 +9,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Common
         public Rigidbody Value;
     }
 
-    public class CharacterControllerComponent : IEntityComponent
-    {
-        public CharacterController Value;
-    }
-
     public class TransformComponent : IEntityComponent
     {
         public Transform Value;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de58767361775ef44ac23df5f63bbdd2, type: 3}
   m_Name: ProjectileConfig
   m_EditorClassIdentifier: 
-  <Damage>k__BackingField: 100
-  <Radius>k__BackingField: 100
+  <Damage>k__BackingField: 50
+  <Radius>k__BackingField: 3
   <MovementSpeed>k__BackingField: 0
   <RotationSpeed>k__BackingField: 0

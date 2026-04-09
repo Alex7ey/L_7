@@ -12,6 +12,7 @@ using Assets._Project.Develop.Runtime.Gameplay.Features.LifeCycleFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.MovementFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.RotateFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.Sensors;
+using Assets._Project.Develop.Runtime.Gameplay.Features.TeamsFeature;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Utilities.Conditions;
 using Assets._Project.Develop.Runtime.Utilities.Reactive;
@@ -48,6 +49,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
            .AddTakeDamageEvent()
 
            .AddIsTower()
+           .AddTeam(new ReactiveVariable<Teams>(Teams.MainHero))
            ;
 
             ICompositeCondition mustDie = new CompositeCondition()
@@ -84,6 +86,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
                 .AddContactCollidersBuffer(new Buffer<Collider>(64))
                 .AddContactEntitiesBuffer(new Buffer<Entity>(64))
                 .AddRadiusDetecting(new ReactiveVariable<float>(projectileConfig.Radius))
+
+                .AddTeam(new ReactiveVariable<Teams>(Teams.MainHero))
 
                 .AddIsDead()
                 .AddDeathMask(1 << LayerMask.NameToLayer("Characters"))
@@ -132,6 +136,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
             entity
                .AddMaxHealth(new ReactiveVariable<float>(config.MaxHealth))
                .AddCurrentHealth(new ReactiveVariable<float>(config.MaxHealth))
+
+               .AddTeam(new ReactiveVariable<Teams>(Teams.Enemies))
 
                .AddIsDead()
                .AddInDeathProcess()
