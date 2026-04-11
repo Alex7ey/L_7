@@ -7,13 +7,13 @@ using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.LoadingScreen;
 using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
+using Assets._Project.Develop.Runtime.UI.MainMenuScreen;
 
 namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 {
     public class MainMenuBootstrap : Bootstrap
     {
         private DIContainer _container;
-        private MetaProcess _metaProcess;
 
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs inputSceneArgs)
         {
@@ -26,8 +26,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
         public override IEnumerator Initialize()
         {
-            _metaProcess = _container.Resolve<MetaProcess>();
-
             yield return _container.Resolve<ConfigsProviderService>().LoadAsync();
         }
 
@@ -46,7 +44,8 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
         }
 
         public override void Run()
-        {     
+        {
+            _container.Resolve<MainMenuPopupService>().OpenLevelsMenuPopup();
         }
     }
 }

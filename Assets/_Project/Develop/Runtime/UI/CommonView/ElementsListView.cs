@@ -10,6 +10,8 @@ namespace Assets._Project.Develop.Runtime.UI.CommonView
 
         private List<TElement> _elements = new();
 
+        public IReadOnlyList<TElement> Elements => _elements;
+
         public void Add(TElement element)
         {
             element.transform.SetParent(_parent);

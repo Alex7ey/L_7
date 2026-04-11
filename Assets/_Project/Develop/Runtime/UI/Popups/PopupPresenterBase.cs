@@ -21,7 +21,7 @@ namespace Assets._Project.Develop.Runtime.UI.Popups
 
         protected abstract PopupViewBase PopupView { get; }
 
-        public abstract void Initialize();
+        public virtual void Initialize() { }
   
         public virtual void Dispose()
         {

@@ -1,5 +1,6 @@
 ﻿using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI;
+using Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity;
 using Assets._Project.Develop.Runtime.Gameplay.GameStates;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
@@ -17,7 +18,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private AIBrainsContext _brainsContext;
         private GameplayStatesContext _gameplayStateContext;
 
-        private ProjectileShooter _gameplay;
+        private ProjectileShooter _projectileShooter;
 
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs inputSceneArgs = null)
         {
@@ -32,10 +33,13 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         public override IEnumerator Initialize()
         {
-            _gameplay = _container.Resolve<ProjectileShooter>();
+            _projectileShooter = _container.Resolve<ProjectileShooter>();
             _entitiesLifeContext = _container.Resolve<EntitiesLifeContext>();
             _brainsContext = _container.Resolve<AIBrainsContext>();
+
             _gameplayStateContext = _container.Resolve<GameplayStatesContext>();
+
+            _container.Resolve<TowerFactory>().Create();
 
             yield break;
         }
@@ -48,7 +52,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             _entitiesLifeContext?.Update(Time.deltaTime);
             _gameplayStateContext?.Update(Time.deltaTime);
 
-            _gameplay?.Update(Time.deltaTime);
+            _projectileShooter?.Update(Time.deltaTime);
         }
 
         private void FixedUpdate()

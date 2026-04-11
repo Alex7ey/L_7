@@ -31,7 +31,7 @@ namespace Assets._Project.Develop.Runtime.UI
         {
             foreach (var currencyType in _walletService.AvailableCurrencies)
             {
-                IconTextView currencyView = _viewFactory.Create<IconTextView>(ViewIDs.CurrencyView);
+                IconTextView currencyView = _viewFactory.Create<IconTextView>(ViewIDs.IconTextView, _walletView.transform);
                        
                 _walletView.Add(currencyView);
 

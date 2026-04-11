@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Assets._Project.Develop.Runtime.Configs;
-using Assets._Project.Develop.Runtime.Meta.Features.Statistics;
 using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.Data;
+using Assets._Project.Develop.Runtime.Utilities.Reactive;
 
 namespace Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider
 {
@@ -21,14 +21,27 @@ namespace Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider
         {
             return new PlayerData()
             {
-                WalletData = InitializeWalletData()
+                WalletData = InitializeWalletData(),
+
+                Inventory = InitializeInventoryData(),
+
+                CompletedLevels = new List<int>()
             };
+        }
+
+        private Dictionary<string, ReactiveVariable<int>> InitializeInventoryData()
+        {
+            Dictionary<string, ReactiveVariable<int>> InventoryData = new();
+
+            InventoryData.Add("Mine", new ReactiveVariable<int>(0));
+
+            return InventoryData;
         }
 
         private Dictionary<CurrencyTypes, int> InitializeWalletData()
         {
             Dictionary<CurrencyTypes, int> walletData = new();
-          
+
             StartWalletConfig walletConfig = _configsProviderService.GetConfig<StartWalletConfig>();
 
             foreach (CurrencyTypes currencyTypes in Enum.GetValues(typeof(CurrencyTypes)))
@@ -36,5 +49,6 @@ namespace Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider
 
             return walletData;
         }
+
     }
 }

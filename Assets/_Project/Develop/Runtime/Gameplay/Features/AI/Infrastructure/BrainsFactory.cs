@@ -1,5 +1,6 @@
 ﻿using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States;
+using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.Attack;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.FindTarget;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.Movement;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.TeleportState;
@@ -45,6 +46,16 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
         public StateMachineBrain CreateToTargetTeleportingEntity(Entity entity)
         {
             AIStateMachine stateMachine = CreateTeleportTargetStateMachine(entity);
+            StateMachineBrain brain = new StateMachineBrain(stateMachine);
+
+            _brainsContext.SetFor(entity, brain);
+
+            return brain;
+        }
+
+        public StateMachineBrain CreateMineEntity(Entity entity)
+        {
+            AIStateMachine stateMachine = CreateMineEntityStateMachine(entity);
             StateMachineBrain brain = new StateMachineBrain(stateMachine);
 
             _brainsContext.SetFor(entity, brain);
@@ -151,7 +162,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             EmptyState emptyState = new();
             AttackTriggerState attackState = new(entity);
             TeleportToTargetState teleportState = new(entity);
-            FindTargetState findTargetState = new(new WeakestTargeSelector(entity), _entitiesLifeContext, entity);
+            FindTargetState findTargetState = new(new WeakestTargetSelector(entity), _entitiesLifeContext, entity);
 
             TimerService idleTimer = _timerServiceFactory.Create(2f);
 
@@ -203,6 +214,23 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             rootStateMachine.AddState(parallelState);
 
             return rootStateMachine;
+        }
+
+        private AIStateMachine CreateMineEntityStateMachine(Entity entity)
+        {
+            DetectingEntitiesInRadiusState detectingEntitiesRadiusState = new(entity);
+            ExplosionState explosionState = new(entity);
+
+            AIStateMachine stateMachine = new();
+
+            FuncCondition fromDetectedToAttackState = new(() => entity.DetectedEntity.Value);
+
+            stateMachine.AddState(detectingEntitiesRadiusState);
+            stateMachine.AddState(explosionState);
+
+            stateMachine.AddTransition(detectingEntitiesRadiusState, explosionState, fromDetectedToAttackState);
+
+            return stateMachine;
         }
     }
 }

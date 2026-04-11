@@ -16,8 +16,7 @@ namespace Assets._Project.Develop.Runtime.UI
 
         private IDisposable _disposable;
 
-        public CurrencyPresenter(
-           IReadOnlyVariable<int> currency,
+        public CurrencyPresenter(IReadOnlyVariable<int> currency,
            CurrencyTypes currencyType,
            CurrencyIconsConfig currencyIconsConfig,
            IconTextView view)

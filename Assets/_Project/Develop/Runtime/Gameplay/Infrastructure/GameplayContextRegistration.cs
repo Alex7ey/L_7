@@ -10,6 +10,7 @@ using Assets._Project.Develop.Runtime.Gameplay.Features.StagesFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity;
 using Assets._Project.Develop.Runtime.Gameplay.GameStates;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.UI.GamePlayScreen;
 using Assets._Project.Develop.Runtime.UI.UIRoot;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
@@ -38,10 +39,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreatePreperationTriggerService);
             container.RegisterAsSingle(CreateStagesFactory);
             container.RegisterAsSingle(CreateGameplayStatesFactory);
-           
+            container.RegisterAsSingle(CreateGameplayStatesContext);
+         
             container.RegisterAsSingle(CreateGamePlayUIRoot).NonLazy();
             container.RegisterAsSingle(CreateTowerHolderService).NonLazy();
             container.RegisterAsSingle(CreateMonoEntitiesFactory).NonLazy();
+            container.RegisterAsSingle(CreateGamePlayScreenPresenter).NonLazy();
 
             container.RegisterAsSingle<IInputService>(CreateDesktopInput);
 
@@ -65,6 +68,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
                 container.Resolve<EntitiesLifeContext>(),
                 container.Resolve<CollidersRegistryService>());
         }
+
+        private static GameplayStatesContext CreateGameplayStatesContext(DIContainer container)
+        {
+            return new GameplayStatesContext(container.Resolve<GameplayStatesFactory>().CreateGameplayStateMachine(_gameplayInputArgs));
+        }
+
         private static DesktopInput CreateDesktopInput(DIContainer container) => new DesktopInput();
 
         private static GamePlayPresentersFactory CreateGamePlayPresentersFactory(DIContainer container) => new(container);
@@ -101,5 +110,13 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private static StagesFactory CreateStagesFactory(DIContainer container) => new StagesFactory(container);
 
         private static GameplayStatesFactory CreateGameplayStatesFactory(DIContainer container) => new GameplayStatesFactory(container);
+
+        private static GamePlayScreenPresenter CreateGamePlayScreenPresenter(DIContainer container)
+        {
+            GamePlayUIRoot uiRoot = container.Resolve<GamePlayUIRoot>();
+            GamePlayScreenView view = container.Resolve<ViewsFactory>().Create<GamePlayScreenView>(ViewIDs.GamePlayScreenView, uiRoot.HUDLayer);
+
+            return new GamePlayScreenPresenter(container.Resolve<ProjectPresentersFactory>(),view, container.Resolve<GamePlayPresentersFactory>());
+        }
     }
 }

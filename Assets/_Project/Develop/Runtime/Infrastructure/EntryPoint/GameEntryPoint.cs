@@ -6,6 +6,8 @@ using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
+using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
+using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 
 namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
 {
@@ -36,7 +38,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
 
             loadingScreen.Hide();
 
-            yield return sceneSwitcher.ProcessSwitchTo(Scenes.Gameplay);
+            yield return sceneSwitcher.ProcessSwitchTo(Scenes.MainMenu);
         }
 
         private IEnumerator InitializePlayerData(PlayerDataProvider playerDataProvider)

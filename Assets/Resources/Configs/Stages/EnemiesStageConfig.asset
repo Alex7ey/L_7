@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: EnemiesStageConfig
   m_EditorClassIdentifier: 
   _enemyItems:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: fa839d37661fe7643aabc62eefe09d1c, type: 2}
+  - {fileID: 11400000, guid: fa839d37661fe7643aabc62eefe09d1c, type: 2}
+  - {fileID: 11400000, guid: fa839d37661fe7643aabc62eefe09d1c, type: 2}
+  - {fileID: 11400000, guid: fa839d37661fe7643aabc62eefe09d1c, type: 2}
+  - {fileID: 11400000, guid: fa839d37661fe7643aabc62eefe09d1c, type: 2}

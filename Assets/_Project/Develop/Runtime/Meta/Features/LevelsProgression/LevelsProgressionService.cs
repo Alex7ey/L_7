@@ -1,8 +1,6 @@
-﻿using Assets._Project.Develop.Runtime.Utilities.DataManagment;
-using Assets._Project.Develop.Runtime.Utilities.DataManagment.Data;
+﻿using Assets._Project.Develop.Runtime.Utilities.DataManagment.Data;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
 using System.Collections.Generic;
-using System.Data;
 
 namespace Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression
 {

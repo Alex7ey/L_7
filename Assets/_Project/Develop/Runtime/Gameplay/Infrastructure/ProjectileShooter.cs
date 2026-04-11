@@ -19,12 +19,21 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         {
             if (Input.GetMouseButtonDown(0))
                 Shoot();
+
+            if (Input.GetMouseButtonDown(1))
+                CreateMine();
         }
 
         public void Shoot()
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
-                _projectileEntityFactory.CreateExplosion(hit.point);
+                _projectileEntityFactory.CreateExplosionEntity(hit.point);
+        }
+
+        private void CreateMine()
+        {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+                _projectileEntityFactory.CreateMineEntity(hit.point);
         }
     }
 }

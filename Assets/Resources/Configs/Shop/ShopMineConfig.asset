@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25df3408d1be0c74e81f6fae67cff9da, type: 3}
+  m_Name: ShopMineConfig
+  m_EditorClassIdentifier: 
+  <Price>k__BackingField: 3
+  <Name>k__BackingField: Mine
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 6223171e16dd5174a9f7ede5c33e1eac,
+    type: 3}
+  <CurrencyType>k__BackingField: 0

@@ -21,7 +21,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.FindTarget
             _radiusDetecting = entity.RadiusDetecting.Value;
             _isTargetReached = entity.IsTargetReached;
 
-            entity.CurrentTarget.Value = towerHolderService.Tower;///
+            entity.CurrentTarget.Value = towerHolderService.Tower;
         }
 
         public void Update(float deltaTime)

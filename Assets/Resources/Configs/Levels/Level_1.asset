@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Level_1
   m_EditorClassIdentifier: 
   _stageConfigs:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 1e7f2e989148d824a9ac19a8ed6ec580, type: 2}
+  - {fileID: 11400000, guid: 1e7f2e989148d824a9ac19a8ed6ec580, type: 2}
+  - {fileID: 11400000, guid: 1e7f2e989148d824a9ac19a8ed6ec580, type: 2}

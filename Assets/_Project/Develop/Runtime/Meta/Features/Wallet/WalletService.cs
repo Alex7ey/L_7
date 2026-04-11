@@ -4,6 +4,7 @@ using Assets._Project.Develop.Runtime.Utilities.Reactive;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Meta.Features.Wallet
 {
@@ -43,7 +44,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Features.Wallet
         public void Spend(CurrencyTypes type, int amount)
         {
             if (Enough(type, amount) == false)
-                throw new InvalidOperationException("Not enough: " + type.ToString());
+                Debug.Log("Not enough: " + type.ToString());
 
             if (amount < 0)
                 throw new ArgumentOutOfRangeException(nameof(amount));

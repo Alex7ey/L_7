@@ -1,7 +1,8 @@
+using Assets._Project.Develop.Runtime.UI.LevelsMenuPopup;
+using Assets._Project.Develop.Runtime.UI.MainMenuScreen;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using Assets._Project.Develop.Runtime.UI.MainMenuScreen;
 
 namespace Assets._Project.Develop.Runtime.UI.Popups
 {
@@ -22,6 +23,17 @@ namespace Assets._Project.Develop.Runtime.UI.Popups
         }
 
         protected abstract Transform PopupLayer { get; }
+
+        public LevelsMenuPopupPresenter OpenLevelsMenuPopup()
+        {
+            LevelsMenuPopupView view = ViewsFactory.Create<LevelsMenuPopupView>(ViewIDs.LevelsMenuPopup, PopupLayer);
+
+            LevelsMenuPopupPresenter popup = _presentersFactory.CreateLevelsMenuPopupPresenter(view);
+
+            OnPopupCreated(popup, view);
+
+            return popup;
+        }
 
         public void ClosePopup(PopupPresenterBase popup)
         {

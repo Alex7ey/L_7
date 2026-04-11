@@ -8,7 +8,9 @@ namespace Assets._Project.Develop.Runtime.UI.MainMenuScreen
     {
         private readonly MainMenuUIRoot _uiRoot;
 
-        public MainMenuPopupService(ViewsFactory viewsFactory, ProjectPresentersFactory presentersFactory, MainMenuUIRoot uiRoot) : base(viewsFactory, presentersFactory)
+        public MainMenuPopupService(ViewsFactory viewsFactory, 
+            ProjectPresentersFactory presentersFactory, 
+            MainMenuUIRoot uiRoot) : base(viewsFactory, presentersFactory)
         {
             _uiRoot = uiRoot;
         }

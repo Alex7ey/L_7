@@ -35,7 +35,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
             {
                 Entity contactEntity = _contactEntities.Items[i];
 
-                if (EntitiesHelper.TryTakeDamageFrom(_entity, contactEntity, _damageAmount.Value))
+                if (EntitiesHelper.CanTakeDamageFrom(_entity, contactEntity))
                     contactEntity.TakeDamageRequest.Invoke(_damageAmount.Value);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using Assets._Project.Develop.Runtime.Configs;
 using Assets._Project.Develop.Runtime.Configs.Entities;
 using Assets._Project.Develop.Runtime.Configs.Gameplay.Levels;
+using Assets._Project.Develop.Runtime.Configs.Shop;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
 using System;
 using System.Collections;
@@ -21,6 +22,8 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
             {typeof(TowerConfig),"Configs/Entities/TowerConfig"},
             {typeof(EnemyConfig),"Configs/Entities/EnemyConfig"},
             {typeof(ProjectileConfig),"Configs/Entities/ProjectileConfig"},
+
+            {typeof(ShopMineConfig),"Configs/Shop/ShopMineConfig"},
 
             {typeof(LevelsListConfig),"Configs/Levels/LevelsListConfig"},
         };

@@ -84,4 +84,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Attack
     {
         public ReactiveVariable<bool> Value;
     }
+
+    public class DetectedEntity : IEntityComponent
+    {
+        public ReactiveVariable<bool> Value;
+    }
 }

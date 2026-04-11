@@ -2,6 +2,7 @@
 using Assets._Project.Develop.Runtime.Configs.Entities;
 using Assets._Project.Develop.Runtime.Gameplay.Common;
 using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Mono;
+using Assets._Project.Develop.Runtime.Gameplay.Features.AI.States.FindTarget;
 using Assets._Project.Develop.Runtime.Gameplay.Features.ApplyDamage;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage;
 using Assets._Project.Develop.Runtime.Gameplay.Features.Attack;
@@ -88,6 +89,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
                 .AddRadiusDetecting(new ReactiveVariable<float>(projectileConfig.Radius))
 
                 .AddTeam(new ReactiveVariable<Teams>(Teams.MainHero))
+                .AddDetectedEntity()
 
                 .AddIsDead()
                 .AddDeathMask(1 << LayerMask.NameToLayer("Characters"))
@@ -121,6 +123,57 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
 
                 .AddSystem(new AreaDamageSystem())
                 .AddSystem(new ExplosionSystem())
+                ;
+
+            return entity;
+        }
+
+        public Entity CreateMine(Vector3 position, ProjectileConfig projectileConfig)
+        {
+            Entity entity = CreateEmpty();
+
+            _monoEntitiesFactory.Create(entity, position, "Entities/MineEntity");
+
+            entity
+                .AddContactsDetectingMask(1 << LayerMask.NameToLayer("Characters"))
+                .AddContactCollidersBuffer(new Buffer<Collider>(64))
+                .AddContactEntitiesBuffer(new Buffer<Entity>(64))
+                .AddRadiusDetecting(new ReactiveVariable<float>(projectileConfig.Radius))
+
+                .AddTeam(new ReactiveVariable<Teams>(Teams.MainHero))
+                .AddDetectedEntity()
+
+                .AddIsDead()
+                .AddDeathMask(1 << LayerMask.NameToLayer("Characters"))
+                .AddIsTouchDeathMask()
+
+                .AddInstantAttackDamage(new ReactiveVariable<float>(projectileConfig.Damage))
+                .AddInAttackProcess()
+                .AddStartAttackEvent()
+                .AddStartAttackRequest();
+
+            ICompositeCondition mustDie = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsTouchDeathMask.Value));
+
+            ICompositeCondition mustSelfRelease = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value));
+
+            ICompositeCondition canStartAttack = new CompositeCondition()
+              .Add(new FuncCondition(() => entity.IsDead.Value == false));
+
+            entity
+                .AddMustDie(mustDie)
+                .AddCanStartAttack(canStartAttack)
+                .AddMustSelfRelease(mustSelfRelease);
+
+            entity
+                .AddSystem(new ContactsDetectingSystem())
+                .AddSystem(new ContactsEntitiesFilterSystem(_container.Resolve<CollidersRegistryService>()))          
+
+                .AddSystem(new DeathSystem())
+                .AddSystem(new SelfReleaseSystem(_entitiesLifeContext))
+
+                .AddSystem(new AreaDamageSystem())
 
                 ;
 
