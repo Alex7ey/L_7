@@ -1,15 +1,18 @@
 {
   "WalletData": {
-    "Gold": 16
+    "Gold": 11
   },
   "Inventory": {
     "Mine": {
-      "Value": 13
+      "Value": 0
     }
+  },
+  "StatsData": {
+    "Win": 2,
+    "Loss": 0
   },
   "CompletedLevels": [
     1,
-    2,
-    3
+    2
   ]
 }

@@ -24,6 +24,7 @@ namespace Assets._Project.Develop.Runtime.UI.ShopItem
 
         private void OnShopButtonClick() => ShopButtonClicked?.Invoke();
 
+
         private void OnEnable() => ShopButton.onClick.AddListener(OnShopButtonClick);
 
         private void OnDisable() => ShopButton.onClick.RemoveListener(OnShopButtonClick);

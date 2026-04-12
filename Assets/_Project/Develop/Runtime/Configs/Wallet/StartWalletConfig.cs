@@ -6,7 +6,7 @@ using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
 
 namespace Assets._Project.Develop.Runtime.Configs
 {
-    [CreateAssetMenu(menuName = "Configs/StartWalletConfig", fileName = "StartWalletConfig")]
+    [CreateAssetMenu(menuName = "Configs/Wallet/NewStartWalletConfig", fileName = "StartWalletConfig")]
     public class StartWalletConfig : ScriptableObject
     {
         [SerializeField] private List<CurrencyConfig> _configs;

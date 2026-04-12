@@ -43,5 +43,17 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
                 return Input.GetMouseButtonDown(0);
             }
         }
+
+        public bool MinePlaceButtonPress
+        {
+            get
+            {
+                if (IsEnabled == false)
+                    return false;
+
+                return Input.GetMouseButtonDown(1);
+            }
+        }
+
     }
 }

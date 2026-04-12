@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9335fc6b3f12de4f8306a15593c10b6, type: 3}
   m_Name: TowerConfig
   m_EditorClassIdentifier: 
-  <MaxHealth>k__BackingField: 1000
+  <MaxHealth>k__BackingField: 100
   <SpawnPosition>k__BackingField: {x: 0, y: 0, z: 0}

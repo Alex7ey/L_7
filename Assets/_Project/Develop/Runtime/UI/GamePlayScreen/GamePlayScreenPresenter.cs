@@ -1,14 +1,15 @@
 using Assets._Project.Develop.Runtime.UI.CommonView;
 using Assets._Project.Develop.Runtime.UI.ShopItem;
+using System;
 using System.Collections.Generic;
 
 namespace Assets._Project.Develop.Runtime.UI.GamePlayScreen
 {
     public class GamePlayScreenPresenter : IPresenter
     {
-        private GamePlayScreenView _gamePlayScreenView;
-        private GamePlayPresentersFactory _gamePlayPresentersFactory;
-        ProjectPresentersFactory _projectPresentersFactory;
+        private readonly GamePlayScreenView _gamePlayScreenView;
+        private readonly GamePlayPresentersFactory _gamePlayPresentersFactory;
+        private readonly ProjectPresentersFactory _projectPresentersFactory;
 
         private List<IPresenter> _childPresenters = new();
 

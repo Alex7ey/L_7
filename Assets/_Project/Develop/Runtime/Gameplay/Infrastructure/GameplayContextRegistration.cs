@@ -6,15 +6,20 @@ using Assets._Project.Develop.Runtime.Gameplay.Features.EnemysEntity;
 using Assets._Project.Develop.Runtime.Gameplay.Features.ExplosionFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.MainHero;
+using Assets._Project.Develop.Runtime.Gameplay.Features.Miner;
 using Assets._Project.Develop.Runtime.Gameplay.Features.StagesFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity;
 using Assets._Project.Develop.Runtime.Gameplay.GameStates;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
 using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.UI.GamePlayScreen;
 using Assets._Project.Develop.Runtime.UI.UIRoot;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
+using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
+using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
+using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
 using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
@@ -25,7 +30,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         public static void Process(DIContainer container, GameplayInputArgs inputArgs = null)
         {
-            container.RegisterAsSingle(CreateGameplay);
             container.RegisterAsSingle(CreateTowerFactory);
             container.RegisterAsSingle(CreateBrainsFactory);
             container.RegisterAsSingle(CreateEntitiesFactory);
@@ -40,7 +44,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateStagesFactory);
             container.RegisterAsSingle(CreateGameplayStatesFactory);
             container.RegisterAsSingle(CreateGameplayStatesContext);
-         
+            container.RegisterAsSingle(CreateProjectileShooter);
+            container.RegisterAsSingle(CreateMinePlacer);
+
             container.RegisterAsSingle(CreateGamePlayUIRoot).NonLazy();
             container.RegisterAsSingle(CreateTowerHolderService).NonLazy();
             container.RegisterAsSingle(CreateMonoEntitiesFactory).NonLazy();
@@ -82,8 +88,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static EntitiesLifeContext CreateEntitiesLifeContext(DIContainer container) => new EntitiesLifeContext();
 
-        private static ProjectileShooter CreateGameplay(DIContainer container) => new(container.Resolve<ProjectileEntityFactory>());
-
         private static CollidersRegistryService CreateCollidersRegistryService(DIContainer container) => new CollidersRegistryService();
 
         private static BrainsFactory CreateBrainsFactory(DIContainer container) => new BrainsFactory(container);
@@ -111,12 +115,26 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static GameplayStatesFactory CreateGameplayStatesFactory(DIContainer container) => new GameplayStatesFactory(container);
 
+        private static ProjectileShoter CreateProjectileShooter(DIContainer container) => new ProjectileShoter(container.Resolve<ProjectileEntityFactory>());
+
+        private static MinePlacer CreateMinePlacer(DIContainer container)
+        {
+            return new MinePlacer(
+                container.Resolve<ProjectileEntityFactory>(),
+                container.Resolve<ICoroutinesPerformer>(),
+                container.Resolve<InventoryService>(),
+                container.Resolve<PlayerDataProvider>()
+                );
+        }
+
         private static GamePlayScreenPresenter CreateGamePlayScreenPresenter(DIContainer container)
         {
             GamePlayUIRoot uiRoot = container.Resolve<GamePlayUIRoot>();
             GamePlayScreenView view = container.Resolve<ViewsFactory>().Create<GamePlayScreenView>(ViewIDs.GamePlayScreenView, uiRoot.HUDLayer);
-
-            return new GamePlayScreenPresenter(container.Resolve<ProjectPresentersFactory>(),view, container.Resolve<GamePlayPresentersFactory>());
+            DisposableService disposableService = container.Resolve<DisposableService>();
+            GamePlayScreenPresenter presenter = new GamePlayScreenPresenter(container.Resolve<ProjectPresentersFactory>(), view, container.Resolve<GamePlayPresentersFactory>());
+            disposableService.Add(presenter);
+            return presenter;
         }
     }
 }

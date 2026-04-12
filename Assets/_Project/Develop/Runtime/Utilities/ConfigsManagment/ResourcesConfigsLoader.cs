@@ -16,8 +16,11 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
 
         private Dictionary<Type, string> _configsResourcesPaths = new()
         {
-            {typeof(StartWalletConfig), "Configs/StartWalletConfig" },
-            {typeof(CurrencyIconsConfig),"Configs/CurrencyIconsConfig"},
+            {typeof(StartWalletConfig), "Configs/Wallet/StartWalletConfig" },
+            {typeof(CurrencyIconsConfig),"Configs/UI/CurrencyIconsConfig"},
+
+            {typeof(StatisticsConfig),"Configs/Statistics/StatisticsConfig"},
+            {typeof(StatisticsIconsConfig),"Configs/Statistics/StatisticsIconsConfig"},
 
             {typeof(TowerConfig),"Configs/Entities/TowerConfig"},
             {typeof(EnemyConfig),"Configs/Entities/EnemyConfig"},

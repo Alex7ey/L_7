@@ -1,10 +1,14 @@
 ﻿using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.MainHero;
+using Assets._Project.Develop.Runtime.Gameplay.Features.Miner;
 using Assets._Project.Develop.Runtime.Gameplay.Features.StagesFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
 using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
+using Assets._Project.Develop.Runtime.Meta.Features.Statistics;
 using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
+using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 using Assets._Project.Develop.Runtime.Utilities.Conditions;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
@@ -23,12 +27,19 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameStates
 
         public PreperationState CreatePreperationState()
         {
-            return new PreperationState(_container.Resolve<PreperationTriggerService>());
+            return new PreperationState(
+                _container.Resolve<PreperationTriggerService>(),
+                _container.Resolve<MinePlacer>(),
+                _container.Resolve<IInputService>()
+                );
         }
 
         public GameplayState CreateStageProcessState()
         {
-            return new GameplayState(_container.Resolve<StageProviderService>());
+            return new GameplayState(
+                _container.Resolve<StageProviderService>(),
+                _container.Resolve<ProjectileShoter>(),
+                _container.Resolve<IInputService>());
         }
 
         public WinState CreateWinState(GameplayInputArgs inputArgs)
@@ -40,7 +51,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameStates
                 _container.Resolve<PlayerDataProvider>(),
                 _container.Resolve<SceneSwitcherService>(),
                 _container.Resolve<ICoroutinesPerformer>(),
-                _container.Resolve<WalletService>())
+                _container.Resolve<WalletService>(),
+                _container.Resolve<PlayerStatisticsService>(),
+                _container.Resolve<StageProviderService>())
                 ;
         }
 
@@ -49,7 +62,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameStates
             return new DefeatState(
                 _container.Resolve<IInputService>(),
                 _container.Resolve<SceneSwitcherService>(),
-                _container.Resolve<ICoroutinesPerformer>());
+                _container.Resolve<ICoroutinesPerformer>(),
+                _container.Resolve<PlayerDataProvider>(),
+                _container.Resolve<PlayerStatisticsService>());
         }
 
         public GameplayStateMachine CreateGameplayStateMachine(GameplayInputArgs gameplayInputArgs)

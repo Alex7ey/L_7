@@ -3,6 +3,7 @@ using Assets._Project.Develop.Runtime.Configs.Shop;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
 using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
+using Assets._Project.Develop.Runtime.Meta.Features.Statistics;
 using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
 using Assets._Project.Develop.Runtime.UI.CommonView;
 using Assets._Project.Develop.Runtime.UI.LevelsMenuPopup;
@@ -21,9 +22,19 @@ namespace Assets._Project.Develop.Runtime.UI
 
         public ProjectPresentersFactory(DIContainer container) => _container = container;
 
+        public StatisticsPresenter CreateStatisticsPresenter(IconTextListView iconTextListView)
+        {
+            return new StatisticsPresenter(iconTextListView, _container.Resolve<ViewsFactory>(), _container.Resolve<PlayerStatisticsService>(), this);
+        }
+
         public WalletPresenter CreateWalletPresenter(IconTextListView iconTextListView)
         {
             return new WalletPresenter(iconTextListView, _container.Resolve<ViewsFactory>(), _container.Resolve<WalletService>(), this);
+        }
+
+        public StatisticsItemPresenter CreateStatisticsItemPresenter(IReadOnlyVariable<int> value, StatisticsItemTypes statisticsType, IconTextView view)
+        {
+            return new StatisticsItemPresenter(value, statisticsType, _container.Resolve<ConfigsProviderService>().GetConfig<StatisticsIconsConfig>(), view);
         }
 
         public CurrencyPresenter CreateCurrencyPresenter(IReadOnlyVariable<int> currency, CurrencyTypes currencyType, IconTextView view)

@@ -22,6 +22,7 @@ namespace Assets._Project.Develop.Runtime.UI
         public void Initialize()
         {
             CreateWallet();
+            CreateStatistics();
 
             foreach (var presenter in _childPresenters)
                 presenter.Initialize();
@@ -41,5 +42,13 @@ namespace Assets._Project.Develop.Runtime.UI
 
             _childPresenters.Add(walletPresenter);
         }
+
+        private void CreateStatistics()
+        {
+            StatisticsPresenter statsPresenter = _projectPresentersFactory.CreateStatisticsPresenter(_mainMenuScreenView.StatisticsView);
+
+            _childPresenters.Add(statsPresenter);
+        }
+
     }
 }

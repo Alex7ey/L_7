@@ -18,8 +18,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         private AIBrainsContext _brainsContext;
         private GameplayStatesContext _gameplayStateContext;
 
-        private ProjectileShooter _projectileShooter;
-
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs inputSceneArgs = null)
         {
             if (inputSceneArgs is not GameplayInputArgs gameplayInputArgs)
@@ -33,7 +31,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         public override IEnumerator Initialize()
         {
-            _projectileShooter = _container.Resolve<ProjectileShooter>();
             _entitiesLifeContext = _container.Resolve<EntitiesLifeContext>();
             _brainsContext = _container.Resolve<AIBrainsContext>();
 
@@ -51,8 +48,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             _brainsContext?.Update(Time.deltaTime);
             _entitiesLifeContext?.Update(Time.deltaTime);
             _gameplayStateContext?.Update(Time.deltaTime);
-
-            _projectileShooter?.Update(Time.deltaTime);
         }
 
         private void FixedUpdate()

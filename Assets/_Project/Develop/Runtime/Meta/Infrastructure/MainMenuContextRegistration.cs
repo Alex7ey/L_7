@@ -18,8 +18,10 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
             container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
         }
 
-        private static MainMenuPresentersFactory CreateMainMenuPresentersFactory(DIContainer container) => new MainMenuPresentersFactory(container);
+        private static MainMenuPresentersFactory CreateMainMenuPresentersFactory(DIContainer container) 
+            => new MainMenuPresentersFactory(container);
     
+
         private static MainMenuUIRoot CreateMainMenuUIRoot(DIContainer container)
         {
             ResourcesAssetsLoader resourcesAssetsLoader = container.Resolve<ResourcesAssetsLoader>();

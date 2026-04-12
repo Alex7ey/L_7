@@ -11,6 +11,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
     {
         private Buffer<Entity> _contactEntities;
         private ReactiveVariable<float> _damageAmount;
+        private ReactiveVariable<bool> _isDead;
 
         private IDisposable _attackAreaDamageRequest;
         private ICompositeCondition _canStartAttack;
@@ -20,6 +21,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
         public void OnInit(Entity entity)
         {
             _entity = entity;
+            _isDead = entity.IsDead;
             _damageAmount = entity.InstantAttackDamage;
             _canStartAttack = entity.CanStartAttack;
             _contactEntities = entity.ContactEntitiesBuffer;
@@ -38,6 +40,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AreaDamage
                 if (EntitiesHelper.CanTakeDamageFrom(_entity, contactEntity))
                     contactEntity.TakeDamageRequest.Invoke(_damageAmount.Value);
             }
+
+            _isDead.Value = true;
         }
 
         public void OnDispose()

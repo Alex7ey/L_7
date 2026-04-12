@@ -15,5 +15,5 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   <MovementSpeed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 350
-  <AttackDamage>k__BackingField: 100
+  <AttackDamage>k__BackingField: 20
   <RadiusDetected>k__BackingField: 3

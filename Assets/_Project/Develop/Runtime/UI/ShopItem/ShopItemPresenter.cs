@@ -25,7 +25,8 @@ namespace Assets._Project.Develop.Runtime.UI.ShopItem
 
         IDisposable _dispose;
 
-        public ShopItemPresenter(ShopItemView view,
+        public ShopItemPresenter(
+            ShopItemView view,
             ShopItemConfig config,
             CurrencyIconsConfig currencyIconsConfig,
             WalletService walletService,

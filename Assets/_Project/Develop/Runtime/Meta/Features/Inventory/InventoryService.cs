@@ -62,6 +62,17 @@ namespace Assets._Project.Develop.Runtime.Meta.Features.Inventory
         {
             if (HasItem(item, count))
             {
+                _inventory[item].Value = Math.Max(0, _inventory[item].Value - count);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool RemoveAll(string item, int count = 0)
+        {
+            if (HasItem(item, count))
+            {
                 _inventory[item].Value -= count;
 
                 if (_inventory[item].Value <= 0)

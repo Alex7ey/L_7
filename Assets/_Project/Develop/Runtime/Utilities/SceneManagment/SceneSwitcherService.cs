@@ -4,6 +4,7 @@ using Object = UnityEngine.Object;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Utilities.LoadingScreen;
+using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 
 namespace Assets._Project.Develop.Runtime.Utilities.SceneManagment
 {
@@ -12,17 +13,21 @@ namespace Assets._Project.Develop.Runtime.Utilities.SceneManagment
         private ILoadingScreen _loadingScreen;
         private DIContainer _projectContainer;
         private SceneLoaderService _sceneLoaderService;
+        private DisposableService _disposableService;
 
-        public SceneSwitcherService(SceneLoaderService sceneLoaderService, ILoadingScreen loadingScreen, DIContainer container)
+        public SceneSwitcherService(SceneLoaderService sceneLoaderService, ILoadingScreen loadingScreen, DIContainer container, DisposableService disposableService)
         {
             _sceneLoaderService = sceneLoaderService;
             _loadingScreen = loadingScreen;
             _projectContainer = container;
+            _disposableService = disposableService;
         }
 
         public IEnumerator ProcessSwitchTo(string nameScene, IInputSceneArgs inputSceneArgs = null)
         {
             _loadingScreen.Show();
+
+            _disposableService.Dispose();
 
             yield return _sceneLoaderService.LoadAsync(Scenes.Empty);
             yield return _sceneLoaderService.LoadAsync(nameScene);

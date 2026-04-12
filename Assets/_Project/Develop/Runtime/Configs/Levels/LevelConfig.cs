@@ -9,6 +9,8 @@ namespace Assets._Project.Develop.Runtime.Configs.Gameplay.Levels
     {
         [SerializeField] private List<StageConfig> _stageConfigs;
 
+        [field: SerializeField] public int Reward { get; private set; }
+
         public IReadOnlyList<StageConfig> StageConfigs => _stageConfigs;
     }
 }

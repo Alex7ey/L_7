@@ -8,6 +8,8 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
 
         bool AttackKeyPress { get; }
 
+        bool MinePlaceButtonPress {  get; }
+
         float RotationAngle { get; }
 
         Vector3 MovementDirection { get; }

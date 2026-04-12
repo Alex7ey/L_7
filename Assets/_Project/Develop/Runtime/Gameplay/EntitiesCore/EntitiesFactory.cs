@@ -220,9 +220,9 @@ namespace Assets._Project.Develop.Runtime.Gameplay.EntitiesCore
                .AddIsMoving()
 
                .AddRotationAngle(new ReactiveVariable<Quaternion>(Quaternion.identity))
-               .AddRotationSpeed(new ReactiveVariable<float>(config.RotationSpeed))
-
+               .AddRotationSpeed(new ReactiveVariable<float>(config.RotationSpeed))               
                ;
+
             ICompositeCondition canMove = new CompositeCondition()
              .Add(new FuncCondition(() => entity.IsDead.Value == false));
 

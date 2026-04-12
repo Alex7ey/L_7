@@ -1,24 +1,26 @@
-﻿using System;
-using UnityEngine;
-using System.Collections.Generic;
-using Object = UnityEngine.Object;
-using Assets._Project.Develop.Runtime.UI;
-using Assets._Project.Develop.Runtime.Utilities.Timer;
-using Assets._Project.Develop.Runtime.Infrastructure.DI;
-using Assets._Project.Develop.Runtime.Utilities.Reactive;
+﻿using Assets._Project.Develop.Runtime.Infrastructure.DI;
+using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
+using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
+using Assets._Project.Develop.Runtime.Meta.Features.Statistics;
 using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
+using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
-using Assets._Project.Develop.Runtime.Utilities.DataManagment;
-using Assets._Project.Develop.Runtime.Utilities.LoadingScreen;
-using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
+using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
-using Assets._Project.Develop.Runtime.Meta.Features.LevelsProgression;
-using Assets._Project.Develop.Runtime.Utilities.DataManagment.KeyStorage;
-using Assets._Project.Develop.Runtime.Utilities.DataManagment.Serializer;
+using Assets._Project.Develop.Runtime.Utilities.DataManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataRepository;
-using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
+using Assets._Project.Develop.Runtime.Utilities.DataManagment.KeyStorage;
+using Assets._Project.Develop.Runtime.Utilities.DataManagment.Serializer;
+using Assets._Project.Develop.Runtime.Utilities.LoadingScreen;
+using Assets._Project.Develop.Runtime.Utilities.Reactive;
+using Assets._Project.Develop.Runtime.Utilities.SceneManagment;
+using Assets._Project.Develop.Runtime.Utilities.Timer;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
 {
@@ -34,7 +36,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateConfigsProviderService);
             container.RegisterAsSingle(CreateProjectPresentersFactory);
             container.RegisterAsSingle(CreateTimerServiceFactory);
-            container.RegisterAsSingle(CreateLevelsProgressionService);
+            container.RegisterAsSingle(CreateDisposableService);
 
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
@@ -42,8 +44,15 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle<ICoroutinesPerformer>(CreateCoroutinePerformer);
 
             container.RegisterAsSingle(CreateWalletService).NonLazy();
-            container.RegisterAsSingle(CreateInventoryService).NonLazy();   
+            container.RegisterAsSingle(CreateInventoryService).NonLazy();
+            container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
+            container.RegisterAsSingle(CreatePlayerStatisticsService).NonLazy();
         }
+
+        private static DisposableService CreateDisposableService(DIContainer container) => new DisposableService();
+
+        private static PlayerStatisticsService CreatePlayerStatisticsService(DIContainer container) 
+            => new PlayerStatisticsService(container.Resolve<PlayerDataProvider>());
 
         private static SaveLoadService CreateSaveLoadService(DIContainer container)
         {
@@ -67,8 +76,6 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             return new WalletService(currencies, container.Resolve<PlayerDataProvider>());
         }
 
-        //private static PlayerStatisticsService CreatePlayerStatisticsService(DIContainer container) => new PlayerStatisticsService(container.Resolve<PlayerDataProvider>());
-
         private static CoroutinesPerformer CreateCoroutinePerformer(DIContainer container)
         {
             ResourcesAssetsLoader _assetsLoader = container.Resolve<ResourcesAssetsLoader>();
@@ -88,7 +95,10 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
         }
 
         private static SceneSwitcherService CreateSceneSwitcherService(DIContainer container) 
-            => new SceneSwitcherService(container.Resolve<SceneLoaderService>(), container.Resolve<ILoadingScreen>(), container);
+            => new SceneSwitcherService(container.Resolve<SceneLoaderService>(), 
+                container.Resolve<ILoadingScreen>(), 
+                container, 
+                container.Resolve<DisposableService>());
 
         private static SceneLoaderService CreateSceneLoaderService(DIContainer container) 
             => new SceneLoaderService();
