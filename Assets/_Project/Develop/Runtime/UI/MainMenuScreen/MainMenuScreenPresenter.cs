@@ -22,7 +22,6 @@ namespace Assets._Project.Develop.Runtime.UI
 
         public void Initialize()
         {
-            Debug.Log("inizialize");
             CreateWallet();
             CreateStatistics();
 
