@@ -41,7 +41,7 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 
         public override void Run()
         {
-            _container.Resolve<MainMenuPopupService>().OpenLevelsMenuPopup();
+          
         }
     }
 }

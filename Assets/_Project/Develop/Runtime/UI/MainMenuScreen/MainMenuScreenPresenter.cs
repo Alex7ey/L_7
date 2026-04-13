@@ -1,6 +1,7 @@
 using Assets._Project.Develop.Runtime.UI.Popups;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Device;
 
 
 namespace Assets._Project.Develop.Runtime.UI
@@ -22,6 +23,8 @@ namespace Assets._Project.Develop.Runtime.UI
 
         public void Initialize()
         {
+            _mainMenuScreenView.OpenLevelsMenuButtonClicked += OnOpenLevelsMenuButtonClicked;
+
             CreateWallet();
             CreateStatistics();
 
@@ -31,6 +34,8 @@ namespace Assets._Project.Develop.Runtime.UI
 
         public void Dispose()
         {
+            _mainMenuScreenView.OpenLevelsMenuButtonClicked -= OnOpenLevelsMenuButtonClicked;
+
             foreach (var presenter in _childPresenters)
                 presenter.Dispose();
 
@@ -51,5 +56,9 @@ namespace Assets._Project.Develop.Runtime.UI
             _childPresenters.Add(statsPresenter);
         }
 
+        private void OnOpenLevelsMenuButtonClicked()
+        {
+            _popupService.OpenLevelsMenuPopup();
+        }
     }
 }
