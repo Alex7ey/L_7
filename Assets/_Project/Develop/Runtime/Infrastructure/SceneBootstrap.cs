@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Infrastructure
 {
-    public abstract class Bootstrap : MonoBehaviour
+    public abstract class SceneBootstrap : MonoBehaviour
     {
         public abstract void ProcessRegistrations(DIContainer container, IInputSceneArgs inputSceneArgs);
 

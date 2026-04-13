@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 {
-    public class GameplayBootstrap : Bootstrap
+    public class GameplayBootstrap : SceneBootstrap
     {
         private DIContainer _container;
         private EntitiesLifeContext _entitiesLifeContext;
@@ -26,7 +26,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             GameplayContextRegistration.Process(container, gameplayInputArgs);
 
             _container = container;
-            _container.Initialize();
         }
 
         public override IEnumerator Initialize()

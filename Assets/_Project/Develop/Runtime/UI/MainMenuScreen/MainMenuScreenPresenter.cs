@@ -1,5 +1,6 @@
 using Assets._Project.Develop.Runtime.UI.Popups;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace Assets._Project.Develop.Runtime.UI
@@ -21,6 +22,7 @@ namespace Assets._Project.Develop.Runtime.UI
 
         public void Initialize()
         {
+            Debug.Log("inizialize");
             CreateWallet();
             CreateStatistics();
 

@@ -4,7 +4,6 @@ using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
 using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
 using Assets._Project.Develop.Runtime.UI.ShopItem;
-using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;

@@ -6,20 +6,24 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.DI
     public class DIContainer
     {
         private readonly Dictionary<Type, Registration> _container = new();
-        private readonly List<Type> _request = new();
+
+        private readonly List<Type> _requests = new();
 
         private readonly DIContainer _parent;
 
-        public DIContainer(DIContainer container = null) => _parent = container;
+        public DIContainer() : this(null)
+        {
+        }
+
+        public DIContainer(DIContainer parent) => _parent = parent;
 
         public IRegistrationOptions RegisterAsSingle<T>(Func<DIContainer, T> creator)
         {
             if (IsAlreadyRegister<T>())
                 throw new InvalidOperationException($"{typeof(T)} already register");
 
-            Registration registration = new(container => creator.Invoke(container));
+            Registration registration = new Registration(container => creator.Invoke(container));
             _container.Add(typeof(T), registration);
-
             return registration;
         }
 
@@ -36,10 +40,10 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.DI
 
         public T Resolve<T>()
         {
-            if (_request.Contains(typeof(T)))
+            if (_requests.Contains(typeof(T)))
                 throw new InvalidOperationException($"Cycle resolve for {typeof(T)}");
 
-            _request.Add(typeof(T));
+            _requests.Add(typeof(T));
 
             try
             {
@@ -51,10 +55,10 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.DI
             }
             finally
             {
-                _request.Remove(typeof(T));
+                _requests.Remove(typeof(T));
             }
 
-            throw new InvalidOperationException($"Rigistartion for {typeof(T)} not exists");
+            throw new InvalidOperationException($"Registration for {typeof(T)} not exists");
         }
 
         public void Initialize()
@@ -67,6 +71,11 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.DI
                 registration.OnInitialize();
             }
         }
+
+        public void Dispose()
+        {
+            foreach (Registration registration in _container.Values)
+                registration.OnDispose();
+        }
     }
 }
-

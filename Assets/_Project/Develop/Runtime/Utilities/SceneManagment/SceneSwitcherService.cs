@@ -4,42 +4,46 @@ using Object = UnityEngine.Object;
 using Assets._Project.Develop.Runtime.Infrastructure.DI;
 using Assets._Project.Develop.Runtime.Infrastructure;
 using Assets._Project.Develop.Runtime.Utilities.LoadingScreen;
-using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 
 namespace Assets._Project.Develop.Runtime.Utilities.SceneManagment
 {
     public class SceneSwitcherService
     {
-        private ILoadingScreen _loadingScreen;
-        private DIContainer _projectContainer;
-        private SceneLoaderService _sceneLoaderService;
-        private DisposableService _disposableService;
+        private readonly SceneLoaderService _sceneLoaderService;
+        private readonly ILoadingScreen _loadingScreen;
+        private readonly DIContainer _projectContainer;
 
-        public SceneSwitcherService(SceneLoaderService sceneLoaderService, ILoadingScreen loadingScreen, DIContainer container, DisposableService disposableService)
+        private DIContainer _currentSceneContainer;
+
+        public SceneSwitcherService(
+            SceneLoaderService sceneLoaderService,
+            ILoadingScreen loadingScreen,
+            DIContainer projectContainer)
         {
             _sceneLoaderService = sceneLoaderService;
             _loadingScreen = loadingScreen;
-            _projectContainer = container;
-            _disposableService = disposableService;
+            _projectContainer = projectContainer;
         }
 
-        public IEnumerator ProcessSwitchTo(string nameScene, IInputSceneArgs inputSceneArgs = null)
+        public IEnumerator ProcessSwitchTo(string sceneName, IInputSceneArgs sceneArgs = null)
         {
             _loadingScreen.Show();
 
-            _disposableService.Dispose();
+            _currentSceneContainer?.Dispose();
 
             yield return _sceneLoaderService.LoadAsync(Scenes.Empty);
-            yield return _sceneLoaderService.LoadAsync(nameScene);
+            yield return _sceneLoaderService.LoadAsync(sceneName);
 
-            Bootstrap sceneBootstrap = Object.FindObjectOfType<Bootstrap>();
+            SceneBootstrap sceneBootstrap = Object.FindObjectOfType<SceneBootstrap>();
 
-            if (sceneBootstrap == null)   
+            if (sceneBootstrap == null)
                 throw new NullReferenceException(nameof(sceneBootstrap) + " not found");
 
-            DIContainer sceneContainer = new(_projectContainer);
+            _currentSceneContainer = new DIContainer(_projectContainer);
 
-            sceneBootstrap.ProcessRegistrations(sceneContainer, inputSceneArgs);
+            sceneBootstrap.ProcessRegistrations(_currentSceneContainer, sceneArgs);
+
+            _currentSceneContainer.Initialize();
 
             yield return sceneBootstrap.Initialize();
 

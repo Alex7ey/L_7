@@ -16,7 +16,6 @@ using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.UI.GamePlayScreen;
 using Assets._Project.Develop.Runtime.UI.UIRoot;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
-using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
@@ -131,9 +130,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
         {
             GamePlayUIRoot uiRoot = container.Resolve<GamePlayUIRoot>();
             GamePlayScreenView view = container.Resolve<ViewsFactory>().Create<GamePlayScreenView>(ViewIDs.GamePlayScreenView, uiRoot.HUDLayer);
-            DisposableService disposableService = container.Resolve<DisposableService>();
             GamePlayScreenPresenter presenter = new GamePlayScreenPresenter(container.Resolve<ProjectPresentersFactory>(), view, container.Resolve<GamePlayPresentersFactory>());
-            disposableService.Add(presenter);
             return presenter;
         }
     }

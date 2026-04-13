@@ -9,7 +9,7 @@ using Assets._Project.Develop.Runtime.UI.MainMenuScreen;
 
 namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
 {
-    public class MainMenuBootstrap : Bootstrap
+    public class MainMenuBootstrap : SceneBootstrap
     {
         private DIContainer _container;
 
@@ -18,8 +18,6 @@ namespace Assets._Project.Develop.Runtime.Meta.Infrastructure
             _container = container;
 
             MainMenuContextRegistration.Process(_container);
-
-            container.Initialize();
         }
 
         public override IEnumerator Initialize()

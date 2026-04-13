@@ -6,7 +6,6 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.DI
     public class Registration : IRegistrationOptions
     {
         private Func<DIContainer, object> _creator;
-
         private object _cachedInstance;
 
         public bool IsNonLazy { get; private set; }

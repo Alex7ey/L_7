@@ -5,7 +5,6 @@ using Assets._Project.Develop.Runtime.Meta.Features.Statistics;
 using Assets._Project.Develop.Runtime.Meta.Features.Wallet;
 using Assets._Project.Develop.Runtime.UI;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
-using Assets._Project.Develop.Runtime.Utilities.Cleanup;
 using Assets._Project.Develop.Runtime.Utilities.ConfigsManagment;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment;
@@ -36,7 +35,6 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateConfigsProviderService);
             container.RegisterAsSingle(CreateProjectPresentersFactory);
             container.RegisterAsSingle(CreateTimerServiceFactory);
-            container.RegisterAsSingle(CreateDisposableService);
 
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
@@ -48,8 +46,6 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
             container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
             container.RegisterAsSingle(CreatePlayerStatisticsService).NonLazy();
         }
-
-        private static DisposableService CreateDisposableService(DIContainer container) => new DisposableService();
 
         private static PlayerStatisticsService CreatePlayerStatisticsService(DIContainer container) 
             => new PlayerStatisticsService(container.Resolve<PlayerDataProvider>());
@@ -97,8 +93,7 @@ namespace Assets._Project.Develop.Runtime.Infrastructure.EntryPoint
         private static SceneSwitcherService CreateSceneSwitcherService(DIContainer container) 
             => new SceneSwitcherService(container.Resolve<SceneLoaderService>(), 
                 container.Resolve<ILoadingScreen>(), 
-                container, 
-                container.Resolve<DisposableService>());
+                container);
 
         private static SceneLoaderService CreateSceneLoaderService(DIContainer container) 
             => new SceneLoaderService();
