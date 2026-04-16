@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0665e232e0cd0cd4ab6f7ff8019a3ab5, type: 3}
-  m_Name: StartWalletConfig
+  m_Script: {fileID: 11500000, guid: e04c270d240962c47ac5eb8bdc1e8779, type: 3}
+  m_Name: GameStateConfig
   m_EditorClassIdentifier: 
-  _configs:
-  - <Type>k__BackingField: 0
-    <Value>k__BackingField: 200
+  _stateConfig:
+  - <Ability>k__BackingField: 0
+    <GameStateType>k__BackingField: 1
+  - <Ability>k__BackingField: 1
+    <GameStateType>k__BackingField: 0

@@ -1,7 +1,7 @@
-﻿using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
-using Assets._Project.Develop.Runtime.Gameplay.Features.Shooting;
+﻿using Assets._Project.Develop.Runtime.Configs.GameState;
+using Assets._Project.Develop.Runtime.Gameplay.Features.Ability;
+using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.StagesFeature;
-using Assets._Project.Develop.Runtime.Gameplay.Infrastructure;
 using Assets._Project.Develop.Runtime.Utilities.StateMachineCore;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.GameStates
@@ -9,16 +9,18 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameStates
     public class GameplayState : State, IUpdatableState
     {
         private readonly StageProviderService _stageProviderService;
-        private readonly ProjectileShoter _projectileShooter;
+        private readonly AbilityService _abilityService;
+        private readonly StateConfig _stateConfig;
 
-        private readonly ShooterController _shooterController;
-
-        public GameplayState(StageProviderService stageProviderService, ProjectileShoter projectileShooter, IInputService inputService)
+        public GameplayState(
+            StageProviderService stageProviderService, 
+            IInputService inputService, 
+            AbilityService abilityService,
+            StateConfig stateConfig)
         {
             _stageProviderService = stageProviderService;
-            _projectileShooter = projectileShooter;
-
-            _shooterController = new(_projectileShooter, inputService);
+            _abilityService = abilityService;
+            _stateConfig = stateConfig;
         }
 
         public override void Enter()
@@ -27,18 +29,21 @@ namespace Assets._Project.Develop.Runtime.Gameplay.GameStates
 
             _stageProviderService.SwitchToNext();
             _stageProviderService.StartCurrent();
+
+            _abilityService.SetAbility(_stateConfig.Ability);
         }
 
         public void Update(float deltaTime)
         {
             _stageProviderService?.UpdateCurrent(deltaTime);
-            _shooterController?.Update(deltaTime);
+            _abilityService?.Update(deltaTime);
         }
 
         public override void Exit()
         {
             base.Exit();
 
+            _abilityService.Dispose();
             _stageProviderService.CleanupCurrent();
         }
     }

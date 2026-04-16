@@ -1,12 +1,13 @@
+using Assets._Project.Develop.Runtime.Gameplay.Features.Ability.Core;
 using Assets._Project.Develop.Runtime.Gameplay.Features.ExplosionFeature;
 using Assets._Project.Develop.Runtime.Meta.Features.Inventory;
 using Assets._Project.Develop.Runtime.Utilities.CoroutinesManagment;
 using Assets._Project.Develop.Runtime.Utilities.DataManagment.DataProvider;
 using UnityEngine;
 
-namespace Assets._Project.Develop.Runtime.Gameplay.Features.Miner
+namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability
 {
-    public class MinePlacer : IMiner
+    public class MinePlacementAbility : IAbility
     {
         private ProjectileEntityFactory _projectileEntityFactory;
         private readonly ICoroutinesPerformer _coroutinesPerformer;
@@ -16,7 +17,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Miner
         private const string Mine = "Mine";
         private const int RequiredMines = 1;
 
-        public MinePlacer(
+        public MinePlacementAbility(
             ProjectileEntityFactory projectileEntityFactory,
             ICoroutinesPerformer coroutinesPerformer,
             InventoryService inventoryService,
@@ -28,16 +29,20 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Miner
             _playerDataProvider = playerDataProvider;
         }
 
-        public void PlaceMine(Vector3 position)
+        public void Use(AbilityInputData input)
         {
             if (_inventoryService.HasItem(Mine, RequiredMines) == false)
                 return;
 
-            _projectileEntityFactory.CreateMineEntity(position);
+            if (input.MousePosition == null)
+                return;
+
+            _projectileEntityFactory.CreateMineEntity((Vector3)input.MousePosition);
 
             _inventoryService.Remove(Mine, RequiredMines);
 
             _coroutinesPerformer.StartPerform(_playerDataProvider.SaveAsync());
         }
+
     }
 }

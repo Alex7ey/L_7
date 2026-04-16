@@ -69,7 +69,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.AI
             AttackTriggerState attackState = new AttackTriggerState(entity);
 
             ICompositeCondition fromMovementToAttackStateCondition = new CompositeCondition()
-                .Add(new FuncCondition(() => _inputService.AttackKeyPress == true))
+                .Add(new FuncCondition(() => _inputService.IsUseAbilityPressed == true))
                 .Add(new FuncCondition(() => _inputService.RotationAngle == 0))
                 .Add(new FuncCondition(() => _inputService.MovementDirection == Vector3.zero));
 

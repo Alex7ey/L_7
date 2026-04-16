@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets._Project.Develop.Runtime.Utilities.Reactive;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
 {
@@ -8,7 +10,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
         private const string VerticalAxisName = "Vertical";
 
         private const string HorizontalMouseAxis = "Mouse X";
-     
+
         public bool IsEnabled { get; set; } = true;
 
         public Vector3 MovementDirection
@@ -33,7 +35,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
             }
         }
 
-        public bool AttackKeyPress
+        public bool IsUseAbilityPressed
         {
             get
             {
@@ -44,14 +46,20 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
             }
         }
 
-        public bool MinePlaceButtonPress
+        public Vector3? MousePosition
         {
             get
             {
                 if (IsEnabled == false)
-                    return false;
+                    return null;
 
-                return Input.GetMouseButtonDown(1);
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return null;
+
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+                    return hit.point;
+
+                return null;
             }
         }
 

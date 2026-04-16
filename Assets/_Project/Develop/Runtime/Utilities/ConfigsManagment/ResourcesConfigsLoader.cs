@@ -1,6 +1,7 @@
 ﻿using Assets._Project.Develop.Runtime.Configs;
 using Assets._Project.Develop.Runtime.Configs.Entities;
 using Assets._Project.Develop.Runtime.Configs.Gameplay.Levels;
+using Assets._Project.Develop.Runtime.Configs.GameState;
 using Assets._Project.Develop.Runtime.Configs.Shop;
 using Assets._Project.Develop.Runtime.Utilities.AssetsLoader;
 using System;
@@ -29,6 +30,8 @@ namespace Assets._Project.Develop.Runtime.Utilities.ConfigsManagment
             {typeof(ShopMineConfig),"Configs/Shop/ShopMineConfig"},
 
             {typeof(LevelsListConfig),"Configs/Levels/LevelsListConfig"},
+
+            {typeof(GameStatesConfig),"Configs/State/GameStateConfig"},
         };
 
         public ResourcesConfigsLoader(ResourcesAssetsLoader resources)

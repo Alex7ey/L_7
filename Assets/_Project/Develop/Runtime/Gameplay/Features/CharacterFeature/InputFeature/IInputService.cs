@@ -6,12 +6,12 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature
     {
         bool IsEnabled { get; set; }
 
-        bool AttackKeyPress { get; }
-
-        bool MinePlaceButtonPress {  get; }
+        bool IsUseAbilityPressed { get; }
 
         float RotationAngle { get; }
 
         Vector3 MovementDirection { get; }
+
+        Vector3? MousePosition {  get; }
     }
 }

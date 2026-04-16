@@ -1,12 +1,13 @@
 ﻿using Assets._Project.Develop.Runtime.Configs.Gameplay.Levels;
 using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore;
 using Assets._Project.Develop.Runtime.Gameplay.EntitiesCore.Mono;
+using Assets._Project.Develop.Runtime.Gameplay.Features.Ability;
+using Assets._Project.Develop.Runtime.Gameplay.Features.Ability.Core;
 using Assets._Project.Develop.Runtime.Gameplay.Features.AI;
 using Assets._Project.Develop.Runtime.Gameplay.Features.EnemysEntity;
 using Assets._Project.Develop.Runtime.Gameplay.Features.ExplosionFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.MainHero;
-using Assets._Project.Develop.Runtime.Gameplay.Features.Miner;
 using Assets._Project.Develop.Runtime.Gameplay.Features.StagesFeature;
 using Assets._Project.Develop.Runtime.Gameplay.Features.TowerEntity;
 using Assets._Project.Develop.Runtime.Gameplay.GameStates;
@@ -43,9 +44,10 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             container.RegisterAsSingle(CreateStagesFactory);
             container.RegisterAsSingle(CreateGameplayStatesFactory);
             container.RegisterAsSingle(CreateGameplayStatesContext);
-            container.RegisterAsSingle(CreateProjectileShooter);
-            container.RegisterAsSingle(CreateMinePlacer);
-
+            container.RegisterAsSingle(CreateAbilityFactory);
+            container.RegisterAsSingle(CreateAbilityService);
+            container.RegisterAsSingle(CreateAbilityInputService);
+           
             container.RegisterAsSingle(CreateGamePlayUIRoot).NonLazy();
             container.RegisterAsSingle(CreateTowerHolderService).NonLazy();
             container.RegisterAsSingle(CreateMonoEntitiesFactory).NonLazy();
@@ -114,18 +116,6 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
 
         private static GameplayStatesFactory CreateGameplayStatesFactory(DIContainer container) => new GameplayStatesFactory(container);
 
-        private static ProjectileShoter CreateProjectileShooter(DIContainer container) => new ProjectileShoter(container.Resolve<ProjectileEntityFactory>());
-
-        private static MinePlacer CreateMinePlacer(DIContainer container)
-        {
-            return new MinePlacer(
-                container.Resolve<ProjectileEntityFactory>(),
-                container.Resolve<ICoroutinesPerformer>(),
-                container.Resolve<InventoryService>(),
-                container.Resolve<PlayerDataProvider>()
-                );
-        }
-
         private static GamePlayScreenPresenter CreateGamePlayScreenPresenter(DIContainer container)
         {
             GamePlayUIRoot uiRoot = container.Resolve<GamePlayUIRoot>();
@@ -133,5 +123,13 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Infrastructure
             GamePlayScreenPresenter presenter = new GamePlayScreenPresenter(container.Resolve<ProjectPresentersFactory>(), view, container.Resolve<GamePlayPresentersFactory>());
             return presenter;
         }
+
+        private static AbilityFactory CreateAbilityFactory(DIContainer container) => new AbilityFactory(container);
+
+        private static AbilityService CreateAbilityService(DIContainer container) 
+            => new AbilityService(container.Resolve<AbilityFactory>(), container.Resolve<AbilityInputService>());
+
+        private static AbilityInputService CreateAbilityInputService(DIContainer container)
+            => new AbilityInputService(container.Resolve<IInputService>());
     }
 }
