@@ -9,14 +9,11 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability
     public class ExplosionAbility : IAbility
     {
         private readonly ProjectileEntityFactory _projectileEntityFactory;
-        private readonly IInputService _inputService;
 
         public ExplosionAbility(
-            ProjectileEntityFactory projectileEntityFactory,
-            IInputService inputService)
+            ProjectileEntityFactory projectileEntityFactory)
         {
             _projectileEntityFactory = projectileEntityFactory;
-            _inputService = inputService;
         }
 
         public void Use(AbilityInputData input)
@@ -24,7 +21,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability
             if (input.MousePosition == null)
                 return;
 
-            _projectileEntityFactory.CreateExplosionEntity((Vector3)_inputService.MousePosition);
+            _projectileEntityFactory.CreateExplosionEntity((Vector3)input.MousePosition);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Assets._Project.Develop.Runtime.Gameplay.Features.Ability.Core;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability
 {

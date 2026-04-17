@@ -1,5 +1,4 @@
 using Assets._Project.Develop.Runtime.Gameplay.Features.InputFeature;
-using UnityEngine;
 
 namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability.Core
 {
@@ -19,12 +18,5 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability.Core
             MovementDirection = _inputService.MovementDirection,
             MousePosition = _inputService.MousePosition
         };
-    }
-
-    public struct AbilityInputData
-    {
-        public Vector3 MovementDirection;
-
-        public Vector3? MousePosition;
     }
 }
