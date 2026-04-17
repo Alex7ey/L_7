@@ -18,7 +18,7 @@ namespace Assets._Project.Develop.Runtime.Gameplay.Features.Ability
 
         public IAbility CreateExplosionAbility()
             => new ExplosionAbility(
-                _container.Resolve<ProjectileEntityFactory>();
+                _container.Resolve<ProjectileEntityFactory>());
       
         public IAbility CreateMinePlacement()
         {
